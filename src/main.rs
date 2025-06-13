@@ -45,8 +45,8 @@ async fn main() {
     ));
 
     let app = Router::new()
-        .route("/join", post(join_handler))
-        .route("/hasJoined", get(has_joined_handler))
+        .route("/session/minecraft/join", post(join_handler))
+        .route("/session/minecraft/hasJoined", get(has_joined_handler))
         .with_state((accounts, sessions));
 
     let address = std::env::var("YGG_BIND_ADDRESS").unwrap_or("0.0.0.0:3000".to_string());
@@ -173,8 +173,8 @@ async fn has_joined_handler(
 
     let resp = client
         .get(format!(
-            "{}hasJoined?username={}&serverId={}",
-            url, username, query.serverId
+            "{}hasJoined?serverId={}&username={}",
+            url, query.serverId, username
         ))
         .header("Host", "sessionserver.mojang.com")
         .send()
